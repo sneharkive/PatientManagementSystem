@@ -1,0 +1,29 @@
+# Steps
+- add all require dependencies and build plugins
+- create a "proto" folder inside "src.main" folder then create "billing_service.proto" file inside init
+- write all the required code inside it
+- the run "mvn clean install" inside the billing-service directory
+- check for "protobuf" folder inside the "target" folder ( it could be present inside the "generated-sources" folder )
+- create "grpc" folder inside "billingservice" folder then create "BillingGrpcService.java" init 
+- if it cannot detect the following import 
+```
+import billing.BillingRequest;
+import billing.BillingResponse;
+import billing.BillingServiceGrpc.BillingServiceImplBase;
+```
+- then need to create (if not present) .vscode/settings.json inside the "billing-service" folder and add
+```
+{
+  "java.project.sourcePaths": [
+    "src/main/java",
+    "target/generated-sources/protobuf/java",
+    "target/generated-sources/protobuf/grpc-java"
+  ]
+}
+```
+- Restart VS Code
+```
+Ctrl+Shift+P → Java: Clean Java Language Server Workspace
+```
+
+![alt text](image.png)

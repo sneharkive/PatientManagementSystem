@@ -1,0 +1,88 @@
+# Docker set up
+
+## Postgres setup
+
+**bash**
+```
+SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System       
+$ cd patientservice/
+
+SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System/patientservice
+$ docker network create internal
+```
+
+```
+docker run -d --name patient-service-db -e POSTGRES_USER=admin_user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=db -p 5000:5432 -v patient_service_pgdata:/var/lib/postgresql/data --network internal postgres
+```
+
+# Explanation:
+- -d: detached mode
+
+- --name: container name
+
+- -e: environment variables
+
+- -p: port binding (host:container)
+
+- -v: volume binding (volume:container_path)
+
+- --network internal: attaches to your custom Docker network
+
+- postgres: image name (latest version is pulled)
+
+
+
+
+## patientservice image and container create
+**SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System/patientservice** in this directory
+```
+docker build -t sneharkive/patient-service .
+```
+
+```
+docker run -d \
+  --name patient-service \
+  --network internal \
+  -p 4000:4000 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://patient-service-db:5432/db \
+  -e SPRING_DATASOURCE_USERNAME=admin_user \
+  -e SPRING_DATASOURCE_PASSWORD=password \
+  -e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver \
+  -e SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect \
+  -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
+  -e SPRING_SQL_INIT_MODE=always \
+  -e SPRING_SQL_INIT_PLATFORM=postgres \
+  sneharkive/patient-service
+```
+
+
+
+
+## Other commands
+
+### Check Logs (Optional but useful)
+Run this to see your Spring Boot logs (helpful to check DB connection, startup, etc.):
+
+```
+docker logs -f patient-service
+```
+
+### To go to Postgres CLI
+```
+docker exec -it patient-service-db psql -U admin_user -d db
+```
+then you can run 
+```
+SELECT * FROM patient;
+```
+
+## Push to Docker Hub
+If you want to push this image to Docker Hub, login and push:
+
+```
+docker login
+docker push sneharkive/patient-service
+```
+
+
+
