@@ -2,7 +2,7 @@
 - add all require dependencies and build plugins
 - create a "proto" folder inside "src.main" folder then create "billing_service.proto" file inside init
 - write all the required code inside it
-- the run "mvn clean install" inside the billing-service directory
+- the run `mvn clean install` inside the billing-service directory
 - check for "protobuf" folder inside the "target" folder ( it could be present inside the "generated-sources" folder )
 - create "grpc" folder inside "billingservice" folder then create "BillingGrpcService.java" init 
 - if it cannot detect the following import 
@@ -27,3 +27,47 @@ Ctrl+Shift+P → Java: Clean Java Language Server Workspace
 ```
 
 ![alt text](image.png)
+
+---
+
+
+# Docker Set Up
+
+## patientservice image and container create
+**SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System/billing-service** in this directory
+
+### to create the .jar file
+```
+mvn clean package
+```
+
+```
+docker build -t sneharkive/billing-service .
+```
+
+```
+docker run -d \
+  --name billing-service \
+  --network internal \
+  -p 4001:4001 \
+  -p 9001:9001 \
+  sneharkive/billing-service
+```
+
+## Check Logs (Optional but useful)
+Run this to see your Spring Boot logs (helpful to check DB connection, startup, etc.):
+
+```
+docker logs -f billing-service
+```
+
+
+
+## Push to Docker Hub
+If you want to push this image to Docker Hub, login and push:
+
+```
+docker login
+docker push sneharkive/billing-service
+```
+
