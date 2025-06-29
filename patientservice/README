@@ -45,7 +45,7 @@ mvn clean package
 docker build -t sneharkive/patient-service .
 ```
 
-```
+```bash
 docker run -d \
   --name patient-service \
   --network internal \
@@ -60,6 +60,38 @@ docker run -d \
   -e SPRING_SQL_INIT_PLATFORM=postgres \
   -e BILLING-_SERVICE_ADDRESS=billing-service \
   -e BILLING-_SERVICE_GRPC_PORT=9001 \
+  -e SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092 \
+  sneharkive/patient-service
+```
+
+
+# if you made any changes in src folder or any other file or folder that COPY in Dockerfile 
+then run 
+
+```bash
+docker build -t sneharkive/patient-service .
+```
+
+```bash
+docker rm -f patient-service
+```
+
+```bash
+docker run -d \
+  --name patient-service \
+  --network internal \
+  -p 4000:4000 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://patient-service-db:5432/db \
+  -e SPRING_DATASOURCE_USERNAME=admin_user \
+  -e SPRING_DATASOURCE_PASSWORD=password \
+  -e SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver \
+  -e SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect \
+  -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
+  -e SPRING_SQL_INIT_MODE=always \
+  -e SPRING_SQL_INIT_PLATFORM=postgres \
+  -e BILLING-_SERVICE_ADDRESS=billing-service \
+  -e BILLING-_SERVICE_GRPC_PORT=9001 \
+  -e SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092 \
   sneharkive/patient-service
 ```
 

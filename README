@@ -1,0 +1,113 @@
+## gRPC :
+1 - 1 microservice communication, when you need an immediate response. (i.e synchronous)
+
+## KAFKA : 
+1 - many microservice communication, when you do not need an immediate response. (i.e asynchronous)
+
+# KAFKA Set Up
+
+```shell
+
+docker run -d --name kafka `
+  --network internal `
+  -p 9092:9092 -p 9094:9094 `
+  -e KAFKA_ENABLE_KRAFT=yes `
+  -e KAFKA_CFG_NODE_ID=0 `
+  -e KAFKA_KRAFT_CLUSTER_ID=Yk1fLmRnbE93NndxQ2lqcA ` 
+  -e KAFKA_CFG_PROCESS_ROLES=controller,broker `
+  -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER `
+  -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093 `
+  -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT `
+  -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094 `
+  -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094 `
+  bitnami/kafka:latest
+
+
+```
+
+---
+---
+
+### ✅ Step 1: **Access the Kafka container’s shell**
+
+From your Docker Desktop UI:
+
+1. Locate your **Kafka container** (which is already running).
+2. Click the `>_` (Terminal) icon next to the Kafka container name — this opens a terminal into the container.
+
+Alternatively, from **PowerShell or CMD**:
+
+```bash
+docker exec -it kafka bash
+```
+
+---
+
+### ✅ Step 2: **Create a Kafka topic**
+
+Inside the container, run this:
+
+```bash
+kafka-topics.sh --create --topic patient --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+```
+
+You can verify:
+
+```bash
+kafka-topics.sh --list --bootstrap-server localhost:9092
+```
+
+---
+
+### ✅ Step 3: **Start a producer**
+already make KafkaProducer in patientservice
+<!-- Run this inside the Kafka container: -->
+
+<!-- ```bash
+kafka-console-producer.sh --broker-list localhost:9092 --topic patient
+``` -->
+
+Type a few messages and press Enter to send them.
+
+---
+
+### ✅ Step 4: **Start a consumer**
+
+In **another terminal** (either by splitting the shell inside Docker or a second `docker exec`):
+
+```bash
+kafka-console-consumer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic patient \
+  --from-beginning \
+  --property print.value=true
+```
+
+You should see messages that the producer sends.
+
+---
+
+### Optional: Connect from **Spring Boot (Producer/Consumer)**
+
+1. Add dependencies in your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+```
+
+2. Set Kafka config in `application.properties`:
+
+```properties
+spring.kafka.bootstrap-servers=localhost:9092
+spring.kafka.consumer.group-id=my-group
+spring.kafka.consumer.auto-offset-reset=earliest
+```
+
+
+
+
+
+![alt text](image.png)

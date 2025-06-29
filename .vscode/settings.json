@@ -1,7 +1,9 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "automatic",
   "cSpell.words": [
+    "analyticsservice",
+    "bitnami",
     "devh",
     "protoc",
     "requewest",
