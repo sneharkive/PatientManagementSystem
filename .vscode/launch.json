@@ -19,6 +19,16 @@
       "projectName": "billing-service",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-AuthserviceApplication<authservice>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.pm.authservice.AuthserviceApplication",
+      "projectName": "authservice",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
