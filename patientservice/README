@@ -49,7 +49,7 @@ docker build -t sneharkive/patient-service .
 docker run -d \
   --name patient-service \
   --network internal \
-  -p 4000:4000 \
+  # -p 4000:4000 \
   -e SPRING_DATASOURCE_URL=jdbc:postgresql://patient-service-db:5432/db \
   -e SPRING_DATASOURCE_USERNAME=admin_user \
   -e SPRING_DATASOURCE_PASSWORD=password \
