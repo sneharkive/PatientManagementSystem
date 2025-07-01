@@ -9,3 +9,5 @@ Content-Type: application/json
   "dateOfBirth": "2003-01-25",
   "registeredDate": "2025-06-09"
 }
+
+Authorization: Bearer {{token}}

@@ -3,7 +3,7 @@
 ```bash
 SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System       
 $ cd apigateway
-
+```
 
 ## apigateway image and container create
 **SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System/apigateway** in this directory
@@ -22,27 +22,7 @@ docker run -d \
   --name api-gateway  \
   --network internal \
   -p 4004:4004 \
-  sneharkive/api-gateway
-```
-
-
-# if you made any changes in src folder or any other file or folder that COPY in Dockerfile 
-then run inside "SNEHA@SR MINGW64 ~/Desktop/SB Projects/Patient Management System/apigateway (main)" directory
-
-```bash
-docker build -t sneharkive/api-gateway .
-```
-
-```bash
-docker rm -f api-gateway
-```
-
-```bash
-docker run -d \
-  --name api-gateway  \
-  --network internal \
-  -p 4002:4002 \
-  -e SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092 \
+  -e AUTH_SERVICE_URL=http://auth-service:4005 \
   sneharkive/api-gateway
 ```
 
